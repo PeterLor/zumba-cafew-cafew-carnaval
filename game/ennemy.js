@@ -1,9 +1,7 @@
-var Player = function(name, color, position, direction) {
+var Ennemy = function(name, color, position, direction) {
 
     this.name = name;
     this.position = position;
-    this.life = 3;
-    this.bullets = new Array();
     this.direction = direction;
     this.speed = 0;
 
@@ -14,7 +12,8 @@ var Player = function(name, color, position, direction) {
     var singleGeometry = new THREE.Geometry();
 
     vehiculeMesh = new THREE.ConeGeometry(5, 20, 32);
-    this.graphic = new THREE.Mesh(vehiculeMesh, this.material);
+    this.graphic.position.x = 25;
+    this.graphic.position.y = 15;
     this.graphic.position.z = 6;
 
     this.graphic.rotateOnAxis(new THREE.Vector3(0,0,1), this.direction+(3*Math.PI/2));
@@ -40,7 +39,7 @@ var Ennemy = function(name, color, position, direction) {
     this.graphic.rotateOnAxis(new THREE.Vector3(0,0,1), this.direction+(3*Math.PI/2));
 };
 
-Player.prototype.dead = function () {
+Ennemy.prototype.dead = function () {
     this.graphic.position.z = this.graphic.position.z-0.1;
         //Nettoyage de la div container
         $("#container").html("");
@@ -56,7 +55,7 @@ Ennemy.prototype.dead = function () {
         init();
 }
 
-Player.prototype.accelerate = function (distance) {
+Ennemy.prototype.accelerate = function (distance) {
     var max = 2;
 
     this.speed += distance / 4;
@@ -65,7 +64,7 @@ Player.prototype.accelerate = function (distance) {
     }
 };
 
-Player.prototype.decelerate = function (distance) {
+Ennemy.prototype.decelerate = function (distance) {
     var min = -1;
 
     this.speed -= distance / 16;
@@ -74,21 +73,21 @@ Player.prototype.decelerate = function (distance) {
     }
 };
 
-Player.prototype.displayInfo = function () {
+Ennemy.prototype.displayInfo = function () {
     jQuery('#'+this.name+' >.life').text(this.life);
 }
 
-Player.prototype.turnRight = function (angle) {
+Ennemy.prototype.turnRight = function (angle) {
     this.direction -= angle;
     this.graphic.rotateOnAxis(new THREE.Vector3(0,0,-1), angle);
 };
 
-Player.prototype.turnLeft = function (angle) {
+Ennemy.prototype.turnLeft = function (angle) {
     this.direction += angle;
     this.graphic.rotateOnAxis(new THREE.Vector3(0,0,1), angle);
 };
 
-Player.prototype.move = function () {
+Ennemy.prototype.move = function () {
     var moveTo = new THREE.Vector3(
         this.speed * Math.cos(this.direction) + this.position.x,
         this.speed * Math.sin(this.direction) + this.position.y,
@@ -107,15 +106,12 @@ Player.prototype.move = function () {
     this.graphic.position.x = this.position.x;
     this.graphic.position.y = this.position.y;
     
-    light1.position.x = this.position.x;
-    light1.position.y = this.position.y;
-   //light1.position.z = this.graphic.position.z + 500;
 };
 
 Ennemy.prototype.move = function () {
     var moveTo = new THREE.Vector3(
-        this.speed * Math.cos(this.direction) + this.position.x,
-        this.speed * Math.sin(this.direction) + this.position.y,
+        Math.cos(this.direction) + this.position.x,
+        Math.sin(this.direction) + this.position.y,
         this.graphics.position.z
     );
 
@@ -131,7 +127,4 @@ Ennemy.prototype.move = function () {
     this.graphics.position.x = this.position.x;
     this.graphics.position.y = this.position.y;
     
-    light1.position.x = this.position.x;
-    light1.position.y = this.position.y;
-   //light1.position.z = this.graphic.position.z + 500;
 };
